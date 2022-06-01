@@ -4,9 +4,9 @@ from typing import Tuple, List, Generator, Union, Optional
 
 # The below constants are used to represent the different
 # types of cells in the maze.
-START_CHAR = '$'
-GOAL_CHAR = 'X'
-WALL_CHAR = '#'
+START_SIGNS = '$Ss'
+GOAL_SIGNS = '*Xx'
+WALL_SIGNS = '#&'
 
 
 class Cell:
@@ -62,13 +62,13 @@ class Maze:
 
         for i, line in enumerate(lines):
             for j, char in enumerate(line):
-                if char not in (START_CHAR, GOAL_CHAR, WALL_CHAR, ' '):
-                    raise ValueError(f'Invalid character used: {repr(char)}')
-                elif char == START_CHAR:
+                if char not in f'{START_SIGNS}{GOAL_SIGNS}{WALL_SIGNS} ':
+                    raise ValueError(f'Invalid character {repr(char)} at position ({i}, {j})')
+                elif char in START_SIGNS:
                     if start is not None:
                         raise ValueError('Multiple start positions found!')
                     start = (i, j)
-                elif char == GOAL_CHAR:
+                elif char in GOAL_SIGNS:
                     goals.append((i, j))
                 grid[i][j].value = char
 
@@ -96,7 +96,7 @@ class Maze:
             x = current_x + next_x
             y = current_y + next_y
             if 0 <= x < self.horizontal_limit and 0 <= y < self.vertical_limit and \
-               self.grid[x][y].value != WALL_CHAR:
+               self.grid[x][y].value not in WALL_SIGNS:
                 yield x, y
 
 
@@ -119,8 +119,7 @@ def sma_star(maze: Union[Maze, str], bound: Optional[int] = None, greedy: Option
     if isinstance(maze, str):
         maze = Maze(maze)
 
-    start_x, start_y = maze.start
-    opened = [maze.grid[start_x][start_y]]  # The list initiallized with the starting cell
+    opened = [maze.grid[maze.start[0]][maze.start[1]]]  # The list initiallized with the starting cell
     closed = []  # No cells have been visited yet
 
     while opened:
@@ -156,17 +155,17 @@ def sma_star(maze: Union[Maze, str], bound: Optional[int] = None, greedy: Option
             # print(f'The bound of {bound} is reached')
             if not greedy:
                 return _reconstruct_path(current)
-            bound *= 2  # Double the bound when we are greedy to find the shortest path
+            bound *= 1.5  # Increase the bound by 50%
 
 
 if __name__ == '__main__':
     import sys
     import argparse
 
-    parser = argparse.ArgumentParser(description='Simplified Memory Bounded A* (SMA*) Search Algorithm@#$@#')
+    parser = argparse.ArgumentParser(description='Simplified Memory Bounded A* (SMA*) path finding algorithm.')
     parser.add_argument('maze', type=str, help='The path to the maze file')
     parser.add_argument('-b', '--bound', type=int, help='The maximum number of nodes to be expanded')
-    parser.add_argument('-g', '--greedy', action='store_true', help='Be greedy to find or not by increasing the bound')
+    parser.add_argument('-g', '--greedy', action='store_true', help='Be greedy to find by increasing the bound or not')
     args = parser.parse_args()
 
     with open(args.maze) as f:
@@ -176,7 +175,7 @@ if __name__ == '__main__':
     if solution is None:
         print('No solution found!')
         sys.exit(1)
-    print(f'The solution is: {" -> ".join(map(lambda pos: f"(x={pos[0]}, y={pos[1]})", solution))}\n')
+    print(f'The solution steps in order is: {" -> ".join(map(lambda pos: f"({pos[0]}, {pos[1]})", solution))}\n')
 
     # Printing the maze with the solution
     for row in maze.grid:
