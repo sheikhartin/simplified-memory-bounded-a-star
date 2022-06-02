@@ -2,7 +2,7 @@
 
 A* is a search algorithm that finds the shortest path between nodes in a graph. But it is not memory friendly at all; to fix this, we can use a memory bounded A* algorithm or SMA* for short.
 
-![Crossing a probably easier road...](https://media.giphy.com/media/xUPGcM9CazM9H5KrEA/giphy.gif)
+![Maybe there was a shorter path...](https://media.giphy.com/media/MRWCFJXVNyc8es2rHO/giphy.gif)
 
 ### How it Works
 
@@ -10,7 +10,7 @@ Explaining how SMA* or her mother A* works is not easy in some short sentences. 
 
 ### Usage
 
-Write down your map in the following format in a text file:
+Save your custom maze in the following format in a text file:
 
 ```
 $      ###      #   #        # # #
@@ -18,12 +18,32 @@ $      ###      #   #        # # #
               #####          X
 ```
 
-The letter `$` represents the start and the letter `X` represents the end point. You can also use the `#` characters as wall.
+The characters `$`/`S`/`s` represents the start and the `*`/`X`/`x` represents the end point. You can also use the `#`/`&`/`;` characters as wall.
 
-Then run the program by passing the path of the maze file:
+Run the program by passing the path of the maze file:
 
 ```bash
-python core.py <path_to_maze_file>
+python core.py -m <path_to_maze_file>
+```
+
+Use the `-g` flag to generate a random maze:
+
+```bash
+python core.py -g
+```
+
+<i>The generated maze will be saved in the `genmaze.txt` file.</i>
+
+Set the memory bound by passing the `-b` option:
+
+```bash
+python core.py -m genmaze.txt -b <memory_bound>
+```
+
+Force the program to continue searching even if the memory bound is reached:
+
+```bash
+python core.py -m samples/maze09.txt -b 100 -f
 ```
 
 [Here](samples) is some sample mazes for you to quickly test the algorithm.
