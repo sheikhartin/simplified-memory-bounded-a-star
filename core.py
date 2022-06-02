@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
+import random
 from typing import Tuple, List, Generator, Union, Optional
 
 # The below constants are used to represent the different
 # types of cells in the maze.
 START_SIGNS = '$Ss'
 GOAL_SIGNS = '*Xx'
-WALL_SIGNS = '#&'
+WALL_SIGNS = '#&;'
 
 
 class Cell:
@@ -100,6 +101,26 @@ class Maze:
                 yield x, y
 
 
+def _generate_maze(min_size: Tuple[int, int], max_size: Tuple[int, int],
+                   save_to_file: Optional[bool] = False) -> Maze:
+    """Generates a random maze with the given size."""
+    rows, cols = random.randint(*min_size), random.randint(*max_size)
+    grid = [[' ' for _ in range(cols)] for _ in range(rows)]
+
+    # Inserting some walls, starting and goal positions
+    for _ in range(random.randint(0, rows*cols//5)):
+        grid[random.randint(0, rows-1)][random.randint(0, cols-1)] = '#'
+    grid[random.randint(0, rows-1)][random.randint(0, cols-1)] = '$'
+    grid[random.randint(0, rows-1)][random.randint(0, cols-1)] = 'X'
+
+    if save_to_file:
+        with open('genmaze.txt', 'w') as f:
+            for row in grid:
+                f.write(''.join(row) + '\n')
+
+    return Maze('\n'.join([''.join(row) for row in grid]))
+
+
 def _reconstruct_path(current: Cell) -> List[Tuple[int, int]]:
     """Reconstructs the path from the start to the goal."""
     path = [current.position]
@@ -114,9 +135,11 @@ def _manhattan_distance(current: Tuple[int, int], goal: Tuple[int, int]) -> int:
     return abs(current[0] - goal[0]) + abs(current[1] - goal[1])
 
 
-def sma_star(maze: Union[Maze, str], bound: Optional[int] = None, greedy: Optional[bool] = True) -> List[Tuple[int, int]]:
+def sma_star(maze: Union[Maze, str], bound: Optional[int] = None, forcely: Optional[bool] = False) -> List[Tuple[int, int]]:
     """SMA* searches for the shortest path from the start to the goal(s)."""
-    if isinstance(maze, str):
+    if not isinstance(maze, (Maze, str)):
+        raise TypeError('The maze must be a Maze object or a string.')
+    elif isinstance(maze, str):
         maze = Maze(maze)
 
     opened = [maze.grid[maze.start[0]][maze.start[1]]]  # The list initiallized with the starting cell
@@ -131,6 +154,7 @@ def sma_star(maze: Union[Maze, str], bound: Optional[int] = None, greedy: Option
 
         if current.position in maze.goals:
             # print(f'Goal found after {len(closed)} steps!')
+            print(f'The maximum required bound in this case is {int(bound)}')
             # print('---------------------------------------------------')
             return _reconstruct_path(current)  # Return the path at the first goal found
 
@@ -153,9 +177,11 @@ def sma_star(maze: Union[Maze, str], bound: Optional[int] = None, greedy: Option
 
         if bound is not None and len(closed) > bound:
             # print(f'The bound of {bound} is reached')
-            if not greedy:
+            if not forcely:
                 return _reconstruct_path(current)
-            bound *= 1.5  # Increase the bound by 50%
+            bound *= 1.05  # Increase the bound by just 5%
+
+    return None
 
 
 if __name__ == '__main__':
@@ -163,15 +189,24 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser(description='Simplified Memory Bounded A* (SMA*) path finding algorithm.')
-    parser.add_argument('maze', type=str, help='The path to the maze file')
+    parser.add_argument('-m', '--maze', type=str, help='The path to the maze file')
+    parser.add_argument('-g', '--generate', action='store_true', help='Generate a new maze and save it to a file')
     parser.add_argument('-b', '--bound', type=int, help='The maximum number of nodes to be expanded')
-    parser.add_argument('-g', '--greedy', action='store_true', help='Be greedy to find by increasing the bound or not')
+    parser.add_argument('-f', '--forcely', action='store_true', help='Search the maze even if the bound is reached')
     args = parser.parse_args()
 
-    with open(args.maze) as f:
-        maze = Maze(f.read())
+    if args.generate:
+        maze = _generate_maze(min_size=(5, 5), max_size=(100, 100), save_to_file=True)
+        print('Maze generated!')
+    elif args.maze is not None:
+        with open(args.maze, 'r') as f:
+            maze = Maze(f.read())
+        print('Maze loaded!')
+    else:
+        print('No maze specified! Please read the help for more information.')
+        sys.exit(1)
 
-    solution = sma_star(maze, args.bound, args.greedy)
+    solution = sma_star(maze, args.bound, args.forcely)
     if solution is None:
         print('No solution found!')
         sys.exit(1)
