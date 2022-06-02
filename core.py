@@ -106,19 +106,17 @@ def _generate_maze(min_size: Tuple[int, int], max_size: Tuple[int, int],
     """Generates a random maze with the given size."""
     rows, cols = random.randint(*min_size), random.randint(*max_size)
     grid = [[' ' for _ in range(cols)] for _ in range(rows)]
-
     # Inserting some walls, starting and goal positions
     for _ in range(random.randint(0, rows*cols//5)):
         grid[random.randint(0, rows-1)][random.randint(0, cols-1)] = '#'
     grid[random.randint(0, rows-1)][random.randint(0, cols-1)] = '$'
     grid[random.randint(0, rows-1)][random.randint(0, cols-1)] = 'X'
+    grid = '\n'.join([''.join(row) for row in grid])  # Convert the grid to a string
 
     if save_to_file:
         with open('genmaze.txt', 'w') as f:
-            for row in grid:
-                f.write(''.join(row) + '\n')
-
-    return Maze('\n'.join([''.join(row) for row in grid]))
+            f.write(grid)
+    return Maze(grid)
 
 
 def _reconstruct_path(current: Cell) -> List[Tuple[int, int]]:
