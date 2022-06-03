@@ -2,7 +2,7 @@
 
 A* is a search algorithm that finds the shortest path between nodes in a graph. But it is not memory friendly at all; to fix this, we can use a memory bounded A* algorithm or SMA* for short.
 
-![Maybe there was a shorter path...](https://media.giphy.com/media/MRWCFJXVNyc8es2rHO/giphy.gif)
+![Maybe there was a better path with lower f-cost...](https://media.giphy.com/media/MRWCFJXVNyc8es2rHO/giphy.gif)
 
 ### How it Works
 
@@ -32,13 +32,15 @@ Use the `-g` flag to generate a random maze:
 python core.py -g
 ```
 
-<i>The generated maze will be saved in the `genmaze.txt` file.</i>
+<i>the generated maze will be saved in the `genmaze.txt` file in the current directory</i>
 
-Set the memory bound by passing the `-b` option:
+Set the memory bound by the `-b` option:
 
 ```bash
 python core.py -m genmaze.txt -b <memory_bound>
 ```
+
+<i>memory bound is not the storage bound in kilobyte or megabyte, it is the number of nodes that visited in the search</i>
 
 Force the program to continue searching even if the memory bound is reached:
 
