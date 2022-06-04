@@ -6,7 +6,7 @@ from typing import Tuple, List, Generator, Union, Optional
 # The below constants are used to represent the different
 # types of cells in the maze.
 START_SIGNS = '$Ss'
-GOAL_SIGNS = '*Xx'
+GOAL_SIGNS = '*XxEeGg'
 WALL_SIGNS = '#&;'
 
 
@@ -124,8 +124,8 @@ def _reconstruct_path(current: Cell) -> List[Tuple[int, int]]:
     path = [current.position]
     while current.parent is not None:
         current = current.parent
-        path.append(current.position)
-    return path[::-1]
+        path.insert(0, current.position)
+    return path
 
 
 def _manhattan_distance(current: Tuple[int, int], goal: Tuple[int, int]) -> int:
@@ -152,7 +152,7 @@ def sma_star(maze: Union[Maze, str], bound: Optional[int] = None, forcely: Optio
 
         if current.position in maze.goals:
             # print(f'Goal found after {len(closed)} steps!')
-            print(f'The maximum required bound in this case is {int(bound)}')
+            # print(f'The maximum required bound in this case is {int(bound) if bound is not None else "not specified"}')
             # print('---------------------------------------------------')
             return _reconstruct_path(current)  # Return the path at the first goal found
 
@@ -195,11 +195,11 @@ if __name__ == '__main__':
 
     if args.generate:
         maze = _generate_maze(min_size=(5, 5), max_size=(100, 100), save_to_file=True)
-        print('Maze generated!')
+        print('Maze generated successfully!\n')
     elif args.maze is not None:
         with open(args.maze, 'r') as f:
             maze = Maze(f.read())
-        print('Maze loaded!')
+        print('Maze loaded from file...\n')
     else:
         print('No maze specified! Please read the help for more information.')
         sys.exit(1)
