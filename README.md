@@ -18,7 +18,7 @@ $      ###      #   #        # # #
               #####          X
 ```
 
-The characters `$`/`S`/`s` represents the start and the `*`/`X`/`x` represents the end point. You can also use the `#`/`&`/`;` characters as wall.
+The characters `$`/`S`/`s` represents the start and the `*`/`X`/`x`/`E`/`e`/`G`/`g` represents the end point. You can also use the `#`/`&`/`;` characters as wall.
 
 Run the program by passing the path of the maze file:
 
@@ -32,7 +32,7 @@ Use the `-g` flag to generate a random maze:
 python core.py -g
 ```
 
-<i>the generated maze will be saved in the `genmaze.txt` file in the current directory</i>
+<i>The generated maze will be saved in the `genmaze.txt` file in the current directory.</i>
 
 Set the memory bound by the `-b` option:
 
@@ -40,7 +40,7 @@ Set the memory bound by the `-b` option:
 python core.py -m genmaze.txt -b <memory_bound>
 ```
 
-<i>memory bound is not the storage bound in kilobyte or megabyte, it is the number of nodes that visited in the search</i>
+<i>Memory bound is not the storage bound in kilobyte or megabyte, it is the number of nodes that visited in the search.</i>
 
 Force the program to continue searching even if the memory bound is reached:
 
