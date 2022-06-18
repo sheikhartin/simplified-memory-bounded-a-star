@@ -1,6 +1,6 @@
 ## Simplified Memory Bounded A*
 
-A* is a search algorithm that finds the shortest path between nodes in a graph. But it is not memory friendly at all; to fix this, we can use a memory bounded A* algorithm or SMA* for short.
+A* is a search algorithm that finds the shortest path between nodes in a graph. However, it is not memory friendly at all and to fix this, we can use a memory bounded A* algorithm or SMA* for short.
 
 ![Maybe there was a better path with lower f-cost...](https://media.giphy.com/media/MRWCFJXVNyc8es2rHO/giphy.gif)
 
