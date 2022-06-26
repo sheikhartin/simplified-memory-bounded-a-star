@@ -1,8 +1,12 @@
 ## Simplified Memory Bounded A*
 
+![GitHub repo status](https://img.shields.io/badge/status-active-green?style=flat)
+![GitHub contributors](https://img.shields.io/github/contributors/sheikhartin/simplified-memory-bounded-a-star)
+![GitHub repo size](https://img.shields.io/github/repo-size/sheikhartin/simplified-memory-bounded-a-star)
+
 A* is a search algorithm that finds the shortest path between nodes in a graph. However, it is not memory friendly at all and to fix this, we can use a memory bounded A* algorithm or SMA* for short.
 
-![Maybe there was a better path with lower f-cost...](https://media.giphy.com/media/MRWCFJXVNyc8es2rHO/giphy.gif)
+![Maybe there was a better path with lower f-cost](https://media.giphy.com/media/MRWCFJXVNyc8es2rHO/giphy.gif)
 
 ### How it Works
 
@@ -48,7 +52,7 @@ Force the program to continue searching even if the memory bound is reached:
 python core.py -m samples/maze09.txt -b 100 -f
 ```
 
-[Here](samples) is some sample mazes for you to quickly test the algorithm.
+[Here](samples) is some sample mazes for you.
 
 ### License
 
