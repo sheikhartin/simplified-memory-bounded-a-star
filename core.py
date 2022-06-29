@@ -4,7 +4,7 @@ import random
 from typing import Tuple, List, Generator, Union, Optional
 
 # The below constants are used to represent the different
-# types of cells in the maze.
+# types of cells in the maze. (Except space, which is ' ')
 START_SIGNS = '$Ss'
 GOAL_SIGNS = '*XxEeGg'
 WALL_SIGNS = '#&;'
@@ -162,7 +162,7 @@ def sma_star(maze: Union[Maze, str], bound: Optional[int] = None, forcely: Optio
                 # print(f'Cell {neighbor_cell.position} is already visited')
                 continue
 
-            neighbor_cell.parent = current  # Just the current cell as the parent is not good enough, because we need to trace back to the start
+            neighbor_cell.parent = current  # We need to trace back to the start
             neighbor_cell.g = current.g + 1  # The path cost from the start to the node n increases by 1
             neighbor_cell.h = _manhattan_distance(current.position, neighbor_cell.position)
             neighbor_cell.f = neighbor_cell.g + neighbor_cell.h
@@ -187,10 +187,10 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser(description='Simplified Memory Bounded A* (SMA*) path finding algorithm.')
-    parser.add_argument('-m', '--maze', type=str, help='The path to the maze file')
-    parser.add_argument('-g', '--generate', action='store_true', help='Generate a new maze and save it to a file')
-    parser.add_argument('-b', '--bound', type=int, help='The maximum number of nodes to be expanded')
-    parser.add_argument('-f', '--forcely', action='store_true', help='Search the maze even if the bound is reached')
+    parser.add_argument('-m', '--maze', type=str, help='the path to the maze file')
+    parser.add_argument('-g', '--generate', action='store_true', help='generate a new maze and save it to a file')
+    parser.add_argument('-b', '--bound', type=int, help='the maximum number of nodes to be expanded')
+    parser.add_argument('-f', '--forcely', action='store_true', help='search the maze even if the bound is reached')
     args = parser.parse_args()
 
     if args.generate:
@@ -210,7 +210,7 @@ if __name__ == '__main__':
         sys.exit(1)
     print(f'The solution steps in order is: {" -> ".join(map(lambda pos: f"({pos[0]}, {pos[1]})", solution))}\n')
 
-    # Printing the maze with the solution
+    # Printing the maze with the solution path
     for row in maze.grid:
         for cell in row:
             if cell.position in solution[1:-1]:
