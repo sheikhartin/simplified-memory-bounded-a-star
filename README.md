@@ -1,7 +1,9 @@
 ## Simplified Memory Bounded A*
 
 ![GitHub repo status](https://img.shields.io/badge/status-active-green?style=flat)
+![GitHub license](https://img.shields.io/github/license/sheikhartin/simplified-memory-bounded-a-star)
 ![GitHub contributors](https://img.shields.io/github/contributors/sheikhartin/simplified-memory-bounded-a-star)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sheikhartin/simplified-memory-bounded-a-star)
 ![GitHub repo size](https://img.shields.io/github/repo-size/sheikhartin/simplified-memory-bounded-a-star)
 
 A* is a search algorithm that finds the shortest path between nodes in a graph. However, it is not memory friendly at all and to fix this, we can use a memory bounded A* algorithm or SMA* for short.
