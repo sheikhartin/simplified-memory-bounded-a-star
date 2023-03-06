@@ -144,7 +144,7 @@ def sma_star(maze: Union[Maze, str], bound: Optional[int] = None, forcely: Optio
     closed = []  # No cells have been visited yet
 
     while opened:
-        # print('---------------------------------------------------')
+        # print()
         lowest_f = min(opened, key=lambda cell: cell.f)
         current = opened.pop(opened.index(lowest_f))
         # print(f'Current position is {current.position}')
@@ -153,7 +153,7 @@ def sma_star(maze: Union[Maze, str], bound: Optional[int] = None, forcely: Optio
         if current.position in maze.goals:
             # print(f'Goal found after {len(closed)} steps!')
             # print(f'The maximum required bound in this case is {int(bound) if bound is not None else "not specified"}')
-            # print('---------------------------------------------------')
+            # print()
             return _reconstruct_path(current)  # Return the path at the first goal found
 
         for neighbor_x, neighbor_y in maze.neighbors(current.position):
