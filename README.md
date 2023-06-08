@@ -10,7 +10,7 @@ A* is a search algorithm that finds the shortest path between nodes in a graph. 
 
 ![Maybe there was a better path with lower f-cost](https://media.giphy.com/media/MRWCFJXVNyc8es2rHO/giphy.gif)
 
-### How it Works
+### How It Works
 
 Explaining how SMA* or her mother A* works is not easy in some short sentences. I saved some notes during my research in Notion, you can learn more about this algorithms through [this](https://ejqfnptjmbdvhfm3645zsena4u5jma.notion.site/Simplified-Memory-Bounded-A-2d8676c053bb4540ae3618d3d1564b43) page.
 
